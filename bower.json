@@ -1,0 +1,24 @@
+{
+  "name": "physics",
+  "description": "",
+  "main": "index.js",
+  "authors": [
+    "Joppe Aarts"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/joppe/physics",
+  "moduleType": [
+    "es6"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "system.js": "~0.19.24",
+    "es6-module-loader": "~0.17.11"
+  }
+}
