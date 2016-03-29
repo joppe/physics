@@ -153,6 +153,13 @@ export class Graph {
         return pixel + this.origin.x;
     }
 
+    /**
+     * How to draw the labels? The labels should be drawn by the axes?
+     * The axis is part of the grid?
+     * Check how google charts handles this.
+     *
+     * @returns {Graph}
+     */
     drawGrid() {
         return this;
     }
