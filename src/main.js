@@ -11,7 +11,7 @@ graph
     .setRange('y', -10, 10)
     .drawGrid(1, 1)
     .drawAxes()
-    .drawLabels(1, 1)
+    .drawLabels(2, 2)
     .plot((x) => {
         return x;
     })

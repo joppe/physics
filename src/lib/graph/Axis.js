@@ -1,4 +1,4 @@
-import {Point} from './../physics/Point.js';
+const OFFSET = 30;
 
 /**
  * @class Axis
@@ -9,13 +9,10 @@ export class Axis {
      * @param {boolean} [invert]
      */
     constructor(size, invert = false) {
-        this.size = size;
+        this.size = size - (2 * OFFSET);
         this.invert = invert;
 
-        this.origin = new Point(0, 0);
-        this.scale = 1;
-        this.min = 0;
-        this.max = size;
+        this.setRange(OFFSET, this.size - OFFSET);
     }
 
     /**
@@ -26,8 +23,8 @@ export class Axis {
     setRange(min, max) {
         this.min = min;
         this.max = max;
-        this.scale = this.size / (max - min);
-        this.origin = -min * this.scale;
+        this.scale = this.size / (this.max - this.min);
+        this.origin = -this.min * this.scale;
 
         return this;
     }
@@ -45,7 +42,7 @@ export class Axis {
             pixel += this.origin;
         }
 
-        return pixel;
+        return OFFSET + pixel;
     }
 
     /**
