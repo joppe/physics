@@ -7,13 +7,13 @@ let size = new Size(500, 500),
     graph = new Graph(canvas.getContext(), size);
 
 graph
-    .setRange('x', -10, 10)
+    .setRange('x', 0, 20)
     .setRange('y', -10, 10)
     .drawGrid(1, 1)
     .drawAxes()
     .drawLabels(2, 2)
     .plot((x) => {
-        return 8 * Math.sin(x);
+        return x*x + 2;
     }, 0.1)
 ;
 

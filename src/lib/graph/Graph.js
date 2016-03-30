@@ -217,15 +217,15 @@ export class Graph {
         if (this.axes.y.isCentered()) {
             x = 0;
 
-            for (let y = 0; y <= this.axes.x.max; y += step) {
+            for (let y = 0; y <= this.axes.y.max; y += step) {
                 this.drawText(String(y), new Point(this.axes.x.posToPixel(x) - 15, this.axes.y.posToPixel(y)), style);
             }
 
-            for (let y = this.axes.x.min; 0 > y; y += step) {
+            for (let y = this.axes.y.min; 0 > y; y += step) {
                 this.drawText(String(y), new Point(this.axes.x.posToPixel(x) - 15, this.axes.y.posToPixel(y)), style);
             }
         } else {
-            for (let y = this.axes.x.min; y <= this.axes.x.max; y += step) {
+            for (let y = this.axes.y.min; y <= this.axes.y.max; y += step) {
                 this.drawText(String(y), new Point(this.axes.x.posToPixel(x) - 15, this.axes.y.posToPixel(y)), style);
             }
         }
