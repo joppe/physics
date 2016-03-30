@@ -249,12 +249,13 @@ export class Graph {
 
     /**
      * @param {Function} func
+     * @param {number} [step]
      * @returns {Graph}
      */
-    plot(func) {
+    plot(func, step = 1) {
         let previous = null;
 
-        for (let x = this.axes.x.min; x <= this.axes.x.max; x += 1) {
+        for (let x = this.axes.x.min; x <= this.axes.x.max; x += step) {
             let y = func(x),
                 point = new Point(this.axes.x.posToPixel(x), this.axes.y.posToPixel(y));
 
