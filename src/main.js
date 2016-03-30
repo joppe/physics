@@ -13,8 +13,8 @@ graph
     .drawAxes()
     .drawLabels(2, 2)
     .plot((x) => {
-        return x;
-    })
+        return 8 * Math.sin(x);
+    }, 0.1)
 ;
 
 canvas.appendTo(document.querySelector('body'));
