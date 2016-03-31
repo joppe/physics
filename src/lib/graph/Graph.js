@@ -1,5 +1,6 @@
 import {Point} from './../physics/Point.js';
 import {Axis} from './Axis.js';
+import {range} from './../helper/range.js';
 
 /**
  * @class Graph
@@ -70,15 +71,15 @@ export class Graph {
                 strokeStyle: '#000000',
                 lineWidth: 2
             },
-            x = this.axes.x.posToPixel(this.axes.x.min);
+            x = this.axes.x.min;
 
         if (this.axes.x.isCentered()) {
-            x = this.axes.x.posToPixel(0);
+            x = 0;
         }
 
         this.drawLine(
-            new Point(x, this.axes.y.posToPixel(this.axes.y.min)),
-            new Point(x, this.axes.y.posToPixel(this.axes.y.max)),
+            this.posToPixel(x, this.axes.y.min),
+            this.posToPixel(x, this.axes.y.max),
             style
         );
 
@@ -93,15 +94,15 @@ export class Graph {
                 strokeStyle: '#000000',
                 lineWidth: 2
             },
-            y = this.axes.y.posToPixel(this.axes.y.min);
+            y = this.axes.y.min;
 
         if (this.axes.y.isCentered()) {
-            y = this.axes.y.posToPixel(0);
+            y = 0;
         }
 
         this.drawLine(
-            new Point(this.axes.x.posToPixel(this.axes.x.min), y),
-            new Point(this.axes.x.posToPixel(this.axes.x.max), y),
+            this.posToPixel(this.axes.x.min, y),
+            this.posToPixel(this.axes.x.max, y),
             style
         );
 
@@ -130,16 +131,16 @@ export class Graph {
 
         for (let x = this.axes.x.min; x <= this.axes.x.max; x += xStep) {
             this.drawLine(
-                new Point(this.axes.x.posToPixel(x), this.axes.y.posToPixel(this.axes.y.min)),
-                new Point(this.axes.x.posToPixel(x), this.axes.y.posToPixel(this.axes.y.max)),
+                this.posToPixel(x, this.axes.y.min),
+                this.posToPixel(x, this.axes.y.max),
                 style
             );
         }
 
         for (let y = this.axes.y.min; y <= this.axes.y.max; y += yStep) {
             this.drawLine(
-                new Point(this.axes.x.posToPixel(this.axes.x.min), this.axes.y.posToPixel(y)),
-                new Point(this.axes.x.posToPixel(this.axes.x.max), this.axes.y.posToPixel(y)),
+                this.posToPixel(this.axes.x.min, y),
+                this.posToPixel(this.axes.x.max, y),
                 style
             );
         }
@@ -181,22 +182,22 @@ export class Graph {
                 fillStyle: '#000000',
                 textAlign: 'left'
             },
-            y = this.axes.y.min;
+            y = this.axes.y.min,
+            xx,
+            offset = new Point(-4, 15);
 
         if (this.axes.y.isCentered()) {
             y = 0;
-
-            for (let x = 0; x <= this.axes.x.max; x += step) {
-                this.drawText(String(x), new Point(this.axes.x.posToPixel(x) - 4, this.axes.y.posToPixel(y) + 15), style);
-            }
-
-            for (let x = this.axes.x.min; 0 > x; x += step) {
-                this.drawText(String(x), new Point(this.axes.x.posToPixel(x) - 4, this.axes.y.posToPixel(y) + 15), style);
-            }
+            xx = range(0, this.axes.x.max, step);
+            xx = xx.concat(range(this.axes.x.min, 0, step));
         } else {
-            for (let x = this.axes.x.min; x <= this.axes.x.max; x += step) {
-                this.drawText(String(x), new Point(this.axes.x.posToPixel(x) - 4, this.axes.y.posToPixel(y) + 15), style);
-            }
+            xx = range(this.axes.x.min, this.axes.x.max, step);
+        }
+
+        for (let x of xx) {
+            let position = this.posToPixel(x, y);
+
+            this.drawText(String(x), position.add(offset), style);
         }
 
         return this;
@@ -212,22 +213,22 @@ export class Graph {
                 fillStyle: '#000000',
                 textAlign: 'right'
             },
-            x = this.axes.x.min;
+            x = this.axes.x.min,
+            yy,
+            offset = new Point(-15, 0);
 
         if (this.axes.y.isCentered()) {
             x = 0;
-
-            for (let y = 0; y <= this.axes.y.max; y += step) {
-                this.drawText(String(y), new Point(this.axes.x.posToPixel(x) - 15, this.axes.y.posToPixel(y)), style);
-            }
-
-            for (let y = this.axes.y.min; 0 > y; y += step) {
-                this.drawText(String(y), new Point(this.axes.x.posToPixel(x) - 15, this.axes.y.posToPixel(y)), style);
-            }
+            yy = range(0, this.axes.y.max, step);
+            yy = yy.concat(range(this.axes.y.min, 0, step));
         } else {
-            for (let y = this.axes.y.min; y <= this.axes.y.max; y += step) {
-                this.drawText(String(y), new Point(this.axes.x.posToPixel(x) - 15, this.axes.y.posToPixel(y)), style);
-            }
+            yy = range(this.axes.y.min, this.axes.y.max, step);
+        }
+
+        for (let y of yy) {
+            let position = this.posToPixel(x, y);
+
+            this.drawText(String(y), position.add(offset), style);
         }
 
         return this;
@@ -257,7 +258,7 @@ export class Graph {
 
         for (let x = this.axes.x.min; x <= this.axes.x.max; x += step) {
             let y = func(x),
-                point = new Point(this.axes.x.posToPixel(x), this.axes.y.posToPixel(y));
+                point = this.posToPixel(x, y);
 
             if (null !== previous) {
                 this.drawLine(previous, point, {
@@ -269,5 +270,14 @@ export class Graph {
         }
 
         return this;
+    }
+
+    /**
+     * @param {number} x
+     * @param {number} y
+     * @returns {Point}
+     */
+    posToPixel(x, y) {
+        return new Point(this.axes.x.posToPixel(x), this.axes.y.posToPixel(y));
     }
 }
