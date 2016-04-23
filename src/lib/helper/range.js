@@ -1,13 +1,14 @@
 /**
  * @param {number} start
  * @param {number} end
- * @param {number} step
+ * @param {number} delta
  * @returns {Array}
  */
-export function range(start, end, step = 1) {
+export function range(start, end, delta = 1) {
     let values = [],
         value = start,
-        length = Math.max(Math.ceil((end - start) / step));
+        step = start < end ? delta : -delta,
+        length = Math.abs(Math.floor((end - start) / step));
 
     for (let i = 0; i <= length; i += 1) {
         values.push(value);
