@@ -186,10 +186,10 @@ export class Graph {
             xx,
             offset = new Point(-4, 15);
 
-        if (this.axes.y.isCentered()) {
+        if (this.axes.x.isCentered()) {
             y = 0;
             xx = range(0, this.axes.x.max, step);
-            xx = xx.concat(range(this.axes.x.min, 0, step));
+            xx = xx.concat(range(0, this.axes.x.min, step));
         } else {
             xx = range(this.axes.x.min, this.axes.x.max, step);
         }
@@ -220,7 +220,7 @@ export class Graph {
         if (this.axes.y.isCentered()) {
             x = 0;
             yy = range(0, this.axes.y.max, step);
-            yy = yy.concat(range(this.axes.y.min, 0, step));
+            yy = yy.concat(range(0, this.axes.y.min, step));
         } else {
             yy = range(this.axes.y.min, this.axes.y.max, step);
         }
