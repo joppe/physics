@@ -251,9 +251,10 @@ export class Graph {
     /**
      * @param {Function} func
      * @param {number} [step]
+     * @param {string} [color]
      * @returns {Graph}
      */
-    plot(func, step = 1) {
+    plot(func, step = 1, color = '#ff0000') {
         let previous = null;
 
         for (let x = this.axes.x.min; x <= this.axes.x.max; x += step) {
@@ -262,7 +263,7 @@ export class Graph {
 
             if (null !== previous) {
                 this.drawLine(previous, point, {
-                    strokeStyle: '#ff0000'
+                    strokeStyle: color
                 });
             }
 
