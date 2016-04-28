@@ -52,6 +52,22 @@ export class Matrix {
     }
 
     /**
+     * @param {Number} row
+     * @param {Number} column
+     * @param {*} value
+     * @returns {Matrix}
+     */
+    setElement(row, column, value) {
+        if (this.rows() - 1 < row || this.columns() - 1 < column) {
+            throw new Error(`Invalid arguments row: ${row}; column: ${column};`);
+        }
+
+        this.elements[row][column] = value;
+
+        return this;
+    }
+
+    /**
      * @returns {Matrix}
      */
     clone() {
