@@ -1,15 +1,13 @@
-import {Angle} from './Angle.js';
-
 /**
  * @class Vector
  */
 export class Vector {
     /**
-     * @param {Size} size
+     * @param {Size} length
      * @param {Angle} angle
      */
-    constructor(size, angle) {
-        this.size = size;
+    constructor(length, angle) {
+        this.length = length;
         this.angle = angle;
     }
 
@@ -17,27 +15,27 @@ export class Vector {
      * @returns {number}
      */
     get x() {
-        return Math.cos(this.angle.angle).toFixed(10) * this.size;
+        return Math.cos(this.angle.angle).toFixed(10) * this.length;
     }
 
     /**
      * @returns {number}
      */
     get y() {
-        return Math.sin(this.angle.angle).toFixed(10) * this.size;
+        return Math.sin(this.angle.angle).toFixed(10) * this.length;
     }
 
     /**
      * @returns {Vector}
      */
     clone() {
-        return new Vector(this.size, this.angle.clone());
+        return new Vector(this.length, this.angle.clone());
     }
 
     /**
      * @returns {string}
      */
     toString() {
-        return `Vector(size: ${this.size}, angle: ${this.angle})`;
+        return `Vector(length: ${this.length}, angle: ${this.angle})`;
     }
 }

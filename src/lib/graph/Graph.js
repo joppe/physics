@@ -1,4 +1,4 @@
-import {Point} from './../physics/Point.js';
+import {Point} from './../geometry/Point.js';
 import {Axis} from './Axis.js';
 import {range} from './../helper/range.js';
 
