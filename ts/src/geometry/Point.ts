@@ -7,22 +7,22 @@ export class Point {
      *
      * @type {number}
      */
-    private x:number;
+    private _x:number;
 
     /**
      * The y position
      *
      * @type {number}
      */
-    private y:number;
+    private _y:number;
 
     /**
      * @param {number} x
      * @param {number} y
      */
     constructor(x:number, y:number) {
-        this.x = x;
-        this.y = y;
+        this._x = x;
+        this._y = y;
     }
 
     /**
@@ -30,8 +30,8 @@ export class Point {
      *
      * @returns {number}
      */
-    getX():number {
-        return this.x;
+    get x():number {
+        return this._x;
     }
 
     /**
@@ -39,8 +39,8 @@ export class Point {
      *
      * @returns {number}
      */
-    getY():number {
-        return this.y;
+    get y():number {
+        return this._y;
     }
 
     /**
@@ -48,7 +48,7 @@ export class Point {
      * @returns {Point}
      */
     add(point:Point):Point {
-        return new Point(this.x + point.getX(), this.y + point.getY());
+        return new Point(this.x + point.x, this.y + point.y);
     }
 
     /**
@@ -56,8 +56,8 @@ export class Point {
      * @returns {Point}
      */
     move(point:Point):Point {
-        this.x += point.getX();
-        this.y += point.getY();
+        this._x += point.x;
+        this._y += point.y;
 
         return this;
     }
@@ -74,5 +74,17 @@ export class Point {
      */
     toString():string {
         return `Point(x: ${this.x}, y: ${this.y})`;
+    }
+
+    /**
+     * @param {number} a
+     * @param {number} b
+     * @returns {number}
+     */
+    static distance(a:Point, b:Point):number {
+        let dx = b.x - a.x,
+            dy = b.y - a.y;
+
+        return Math.sqrt(dx * dx + dy * dy);
     }
 }

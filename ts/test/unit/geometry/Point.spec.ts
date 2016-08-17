@@ -10,19 +10,19 @@ describe('Point.constructor', () => {
     });
 });
 
-describe('Point.getX', () => {
+describe('Point.x', () => {
     it('Return the x value', () => {
         let p = new Point(10, 45);
 
-        expect(p.getX()).toBe(10);
+        expect(p.x).toBe(10);
     });
 });
 
-describe('Point.getY', () => {
+describe('Point.y', () => {
     it('Return the y value', () => {
         let p = new Point(10, 45);
 
-        expect(p.getY()).toBe(45);
+        expect(p.y).toBe(45);
     });
 });
 
@@ -32,8 +32,8 @@ describe('Point.add', () => {
             b = new Point(12, 3),
             c = a.add(b);
 
-        expect(c.getX()).toBe(22);
-        expect(c.getY()).toBe(48);
+        expect(c.x).toBe(22);
+        expect(c.y).toBe(48);
         expect(c === a).toBe(false);
         expect(c === b).toBe(false);
     });
@@ -45,8 +45,8 @@ describe('Point.move', () => {
             b = new Point(12, 3),
             c = a.move(b);
 
-        expect(a.getX()).toBe(22);
-        expect(a.getY()).toBe(48);
+        expect(a.x).toBe(22);
+        expect(a.y).toBe(48);
         expect(c === a).toBe(true);
     });
 });
@@ -56,10 +56,10 @@ describe('Point.clone', () => {
         let a = new Point(10, 45),
             b = a.clone();
 
-        expect(a.getX() === b.getX()).toBe(true);
-        expect(a.getY() === b.getY()).toBe(true);
-        expect(a.getX()).toBe(10);
-        expect(a.getY()).toBe(45);
+        expect(a.x === b.x).toBe(true);
+        expect(a.y === b.y).toBe(true);
+        expect(a.x).toBe(10);
+        expect(a.y).toBe(45);
         expect(a === b).toBe(false);
     });
 });
