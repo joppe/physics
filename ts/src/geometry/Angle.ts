@@ -29,6 +29,20 @@ class Angle {
     private _rad:number;
 
     /**
+     * @returns {number}
+     */
+    get radians():number {
+        return this._rad;
+    }
+
+    /**
+     * @returns {number}
+     */
+    get degrees():number {
+        return radiansToDegrees(this._rad);
+    }
+
+    /**
      * @param {number} rad
      */
     constructor(rad:number) {
