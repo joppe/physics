@@ -1,19 +1,13 @@
 /**
  * @interface MatrixElementArray
  */
-interface MatrixElementArray {
-    /**
-     * A two dimensional array of numbers
-     *
-     * @type {number[][]}
-     */
-    [id:number]:number[];
+interface MatrixElementArray extends Array<number[]> {
 }
 
 /**
- * @interface MatrixIndex
+ * @interface MatrixIndexInterface
  */
-interface MatrixIndex {
+interface MatrixIndexInterface {
     /**
      * @type {number}
      */
@@ -38,7 +32,7 @@ class Matrix {
      * @returns {number}
      */
     get size():number {
-        return this.elements.length;
+        return this._elements.length;
     }
 
     /**
@@ -57,7 +51,7 @@ class Matrix {
      * @param {object} index
      * @returns {number}
      */
-    get(index:MatrixIndex):number {
+    get(index:MatrixIndexInterface):number {
         if (false === this.isValidIndex(index)) {
             throw new Error(`Invalid arguments row: ${index.row}; column: ${index.column};`);
         }
@@ -70,7 +64,7 @@ class Matrix {
      * @param {number} value
      * @returns {Matrix}
      */
-    set(index:MatrixIndex, value:number) {
+    set(index:MatrixIndexInterface, value:number) {
         if (false === this.isValidIndex(index)) {
             throw new Error(`Invalid arguments row: ${index.row}; column: ${index.column};`);
         }
@@ -86,7 +80,7 @@ class Matrix {
     clone():Matrix {
         let elements = [];
 
-        this.elements.forEach((row:number[]) => {
+        this._elements.forEach((row:number[]) => {
             let cells = [];
 
             row.forEach((cell:number) => {
@@ -105,7 +99,7 @@ class Matrix {
      * @param {object} index
      * @returns {boolean}
      */
-    isValidIndex(index:MatrixIndex):boolean {
+    isValidIndex(index:MatrixIndexInterface):boolean {
         let size:number = this.size;
 
         return (
@@ -126,7 +120,7 @@ class Matrix {
         if (Array.isArray(elements)) {
             let columnCount:number = 0;
 
-            elements.every((row:number, rowIndex:number) => {
+            elements.every((row:number[], rowIndex:number) => {
                 if (Array.isArray(row)) {
                     if (0 === rowIndex) {
                         columnCount = row.length;
@@ -147,4 +141,4 @@ class Matrix {
     }
 }
 
-export {Matrix};
+export {Matrix, MatrixElementArray, MatrixIndexInterface};
