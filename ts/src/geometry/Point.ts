@@ -52,12 +52,13 @@ export class Point {
     }
 
     /**
-     * @param {Point} point
+     * @param {number} x
+     * @param {number} y
      * @returns {Point}
      */
-    move(point:Point):Point {
-        this._x += point.x;
-        this._y += point.y;
+    move(x:number, y:number):Point {
+        this._x += x;
+        this._y += y;
 
         return this;
     }
