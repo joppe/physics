@@ -16,3 +16,5 @@ interface SizeInterface {
      */
     height:number;
 }
+
+export {SizeInterface};
