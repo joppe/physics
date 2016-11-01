@@ -1,6 +1,5 @@
 .idea/
 node_modules/
-typings/
 dist/*
 !dist/.gitkeep
 !dist/system.conf.js
