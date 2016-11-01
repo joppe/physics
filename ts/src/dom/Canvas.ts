@@ -42,8 +42,8 @@ class Canvas {
         this._size = size;
 
         this._el = document.createElement('canvas');
-        this._el.setAttribute('width', this._size.width);
-        this._el.setAttribute('height', this._size.height);
+        this._el.setAttribute('width', String(this._size.width));
+        this._el.setAttribute('height', String(this._size.height));
     }
 
     /**

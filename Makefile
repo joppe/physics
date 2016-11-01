@@ -4,18 +4,18 @@ PWD := $(shell pwd)
 
 bower:
 	@echo "Install bower packages"
-	$(PWD)/node_modules/bower/bin/bower install
+	$(PWD)/node_modules/.bin/bower install
 
 npm:
 	@echo "Install node packages"
 	npm install
 
-babel:
-	@echo "Transpile javascript"
-	$(PWD)/node_modules/babel-cli/bin/babel.js src --out-dir dist --modules system
+typescript:
+	@echo "Transpile typescript"
+	$(PWD)/node_modules/.bin/tsc --project ts
 
-babel-watch:
-	@echo "Transpile javascript"
-	$(PWD)/node_modules/babel-cli/bin/babel.js src --out-dir dist --modules system --watch
+typescript-watch:
+	@echo "Transpile typescript (watching for changes)"
+	$(PWD)/node_modules/.bin/tsc --project ts  --watch
 
-setup: npm babel bower
+setup: npm bower typescript

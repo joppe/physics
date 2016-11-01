@@ -1,7 +1,7 @@
 /**
  * @class Point
  */
-export class Point {
+class Point {
     /**
      * The x position
      *
@@ -89,3 +89,5 @@ export class Point {
         return Math.sqrt(dx * dx + dy * dy);
     }
 }
+
+export {Point};

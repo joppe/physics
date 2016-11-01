@@ -4,3 +4,4 @@ typings/
 dist/*
 !dist/.gitkeep
 !dist/system.conf.js
+!dist/system.no-cache.js

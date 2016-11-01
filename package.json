@@ -16,16 +16,17 @@
     "url": "https://github.com/joppe/physics/issues"
   },
   "devDependencies": {
-    "es6-module-loader": "^0.17.11",
-    "systemjs": "^0.19.27",
+    "@types/jasmine": "^2.5.37",
+    "bower": "^1.7.9",
+    "es-module-loader": "^1.3.0",
     "jasmine-core": "^2.3.4",
     "karma": "^0.13.3",
     "karma-chrome-launcher": "^0.2",
     "karma-jasmine": "^0.3.5",
     "karma-systemjs": "^0.7.2",
-    "typescript": "^1.8.10",
+    "systemjs": "^0.19.40",
     "tslint": "^3.14.0",
-    "typings": "^1.0.4",
-    "bower": "^1.7.9"
+    "typescript": "^2.0.6",
+    "typings": "^1.0.4"
   }
 }

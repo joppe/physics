@@ -1,5 +1,3 @@
-/// <reference path="../../../../typings/globals/jasmine/index.d.ts" />
-
 import {Point} from 'src/geometry/Point';
 
 describe('Point.constructor', () => {
@@ -42,8 +40,7 @@ describe('Point.add', () => {
 describe('Point.move', () => {
     it('Move a point and return it self', () => {
         let a = new Point(10, 45),
-            b = new Point(12, 3),
-            c = a.move(b);
+            c = a.move(12, 3);
 
         expect(a.x).toBe(22);
         expect(a.y).toBe(48);

@@ -1,22 +1,38 @@
-/**
- * @interface MatrixElementArray
- */
-interface MatrixElementArray extends Array<number[]> {
-}
+import {Point} from './../geometry/Point';
 
 /**
- * @interface MatrixIndexInterface
+ * @interface TransformOptions
  */
-interface MatrixIndexInterface {
+interface TransformOptions {
     /**
      * @type {number}
      */
-    row:number;
+    xScale:number;
 
     /**
      * @type {number}
      */
-    column:number;
+    yScale:number;
+
+    /**
+     * @type {number}
+     */
+    xSkew:number;
+
+    /**
+     * @type {number}
+     */
+    ySkew:number;
+
+    /**
+     * @type {number}
+     */
+    xTranslate:number;
+
+    /**
+     * @type {number}
+     */
+    yTranslate:number;
 }
 
 /**
@@ -24,121 +40,204 @@ interface MatrixIndexInterface {
  */
 class Matrix {
     /**
-     * @type {number[][]}
+     * @type {number}
      */
-    private _elements:MatrixElementArray;
+    private _xScale:number;
+
+    /**
+     * @type {number}
+     */
+    private _yScale:number;
+
+    /**
+     * @type {number}
+     */
+    private _xSkew:number;
+
+    /**
+     * @type {number}
+     */
+    private _ySkew:number;
+
+    /**
+     * @type {number}
+     */
+    private _xTranslate:number;
+
+    /**
+     * @type {number}
+     */
+    private _yTranslate:number;
 
     /**
      * @returns {number}
      */
-    get size():number {
-        return this._elements.length;
+    get xScale():number {
+        return this._xScale;
     }
 
     /**
-     * @param {number[][]} elements
-     * @throws {Error}
-     */
-    constructor(elements:MatrixElementArray) {
-        if (false === Matrix.validateElements(elements)) {
-            throw new Error('Invalid elements array provided for Matrix constructor.');
-        }
-
-        this._elements = elements;
-    }
-
-    /**
-     * @param {object} index
      * @returns {number}
      */
-    get(index:MatrixIndexInterface):number {
-        if (false === this.isValidIndex(index)) {
-            throw new Error(`Invalid arguments row: ${index.row}; column: ${index.column};`);
-        }
-
-        return this._elements[index.row][index.column];
+    get yScale():number {
+        return this._yScale;
     }
 
     /**
-     * @param {object} index
-     * @param {number} value
+     * @returns {number}
+     */
+    get xSkew():number {
+        return this._xSkew;
+    }
+
+    /**
+     * @returns {number}
+     */
+    get ySkew():number {
+        return this._ySkew;
+    }
+
+    /**
+     * @returns {number}
+     */
+    get xTranslate():number {
+        return this._xTranslate;
+    }
+
+    /**
+     * @returns {number}
+     */
+    get yTranslate():number {
+        return this._yTranslate;
+    }
+
+    /**
+     * Constructor
+     */
+    constructor() {
+        this.identity();
+    }
+
+    /**
      * @returns {Matrix}
      */
-    set(index:MatrixIndexInterface, value:number) {
-        if (false === this.isValidIndex(index)) {
-            throw new Error(`Invalid arguments row: ${index.row}; column: ${index.column};`);
-        }
-
-        this._elements[index.row][index.column] = value;
+    identity():Matrix {
+        this._xScale = 1;
+        this._yScale = 1;
+        this._xSkew = 0;
+        this._ySkew = 0;
+        this._xTranslate = 0;
+        this._yTranslate = 0;
 
         return this;
     }
 
     /**
+     * @param {object} options
      * @returns {Matrix}
      */
-    clone():Matrix {
-        let elements = [];
+    transform(options:TransformOptions):Matrix {
+        let xScale = this._xScale,
+            yScale = this._yScale,
+            xSkew = this._xSkew,
+            ySkew = this._ySkew,
+            xTranslate = this._xTranslate,
+            yTranslate = this._yTranslate;
 
-        this._elements.forEach((row:number[]) => {
-            let cells = [];
+        this._xScale = xScale * options.xScale + xSkew * options.ySkew;
+        this._yScale = yScale * options.yScale + ySkew * options.xSkew;
+        this._xSkew = xScale * options.xSkew + xSkew * options.yScale;
+        this._ySkew = ySkew * options.xScale + yScale * options.ySkew;
+        this._xTranslate = xScale * options.xTranslate + xSkew * options.yTranslate + xTranslate;
+        this._yTranslate = yScale * options.yTranslate + ySkew * options.xTranslate + yTranslate;
 
-            row.forEach((cell:number) => {
-                cells.push(cell);
-            });
+        return this;
+    }
 
-            elements.push(cells);
+    /**
+     * @param {number} radians
+     * @returns {Matrix}
+     */
+    rotate(radians:number):Matrix {
+        let cos = Math.cos(radians),
+            sin = Math.sin(radians);
+
+        this.transform({
+            xScale: cos,
+            yScale: cos,
+            xSkew: -sin,
+            ySkew: sin,
+            xTranslate: 0,
+            yTranslate: 0
         });
 
-        return new Matrix(elements);
+        return this;
     }
 
     /**
-     * Check if the row and column indexes are correct
-     *
-     * @param {object} index
-     * @returns {boolean}
+     * @param {number} x
+     * @param {number} y
+     * @returns {Matrix}
      */
-    isValidIndex(index:MatrixIndexInterface):boolean {
-        let size:number = this.size;
+    scale(x:number, y:number):Matrix {
+        this.transform({
+            xScale: x,
+            yScale: y,
+            xSkew: 0,
+            ySkew: 0,
+            xTranslate: 0,
+            yTranslate: 0
+        });
 
-        return (
-            index.row >= 0 &&
-            index.row < size &&
-            index.column  >= 0 &&
-            index.column < size
+        return this;
+    }
+
+    /**
+     * @param {number} x
+     * @param {number} y
+     * @returns {Matrix}
+     */
+    skew(x:number, y:number):Matrix {
+        this.transform({
+            xScale: 1,
+            yScale: 1,
+            xSkew: x,
+            ySkew: y,
+            xTranslate: 0,
+            yTranslate: 0
+        });
+
+        return this;
+    }
+
+    /**
+     * @param {number} x
+     * @param {number} y
+     * @returns {Matrix}
+     */
+    translate(x:number, y:number):Matrix {
+        this.transform({
+            xScale: 1,
+            yScale: 1,
+            xSkew: 0,
+            ySkew: 0,
+            xTranslate: x,
+            yTranslate: y
+        });
+
+        return this;
+    }
+
+    /**
+     * @param {Point} point
+     * @returns {Point}
+     */
+    transformPoint(point:Point):Point {
+        return new Point(
+            point.x * this._xScale + point.y * this._xSkew + this._xTranslate,
+            point.y * this._yScale + point.x * this._ySkew + this._yTranslate
         );
-    }
-
-    /**
-     * @param {number[][]} elements
-     * @returns {boolean}
-     */
-    static validateElements(elements:MatrixElementArray):boolean {
-        let isValid:boolean = true;
-
-        if (Array.isArray(elements)) {
-            let columnCount:number = 0;
-
-            elements.every((row:number[], rowIndex:number) => {
-                if (Array.isArray(row)) {
-                    if (0 === rowIndex) {
-                        columnCount = row.length;
-                    } else {
-                        isValid = row.length === columnCount;
-                    }
-                } else {
-                    isValid = false;
-                }
-
-                return isValid;
-            });
-        } else {
-            isValid = false;
-        }
-
-        return isValid;
     }
 }
 
-export {Matrix, MatrixElementArray, MatrixIndexInterface};
+export {Matrix};

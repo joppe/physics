@@ -1,5 +1,3 @@
-/// <reference path="../../../../typings/globals/jasmine/index.d.ts" />
-
 import {Angle} from 'src/geometry/Angle';
 
 describe('Angle.constructor', () => {

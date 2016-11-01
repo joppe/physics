@@ -50,6 +50,20 @@ class Angle {
     }
 
     /**
+     * @returns {Angle}
+     */
+    clone():Angle {
+        return new Angle(this._rad);
+    }
+
+    /**
+     * @returns {string}
+     */
+    toString():string {
+        return `Angle(angle: ${this._rad.toFixed(5)} radians)`;
+    }
+
+    /**
      * @param {number} rad
      * @returns {Angle}
      */

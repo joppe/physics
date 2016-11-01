@@ -18,8 +18,16 @@ module.exports = function (config) {
 
         // list of files / patterns to load in the browser
         files: [
-            {pattern: 'src/**/*', served: true, included: false},
-            {pattern: 'test/unit/**/*', served: true, included: false}
+            {
+                pattern: 'src/**/*',
+                served: true,
+                included: false
+            },
+            {
+                pattern: 'test/unit/**/*',
+                served: true,
+                included: false
+            }
         ],
 
 
@@ -35,10 +43,10 @@ module.exports = function (config) {
         systemjs: {
             config: {
                 paths: {
-                    systemjs: "vendor/system.js/dist/system.src.js",
-                    'system-polyfills': "vendor/system.js/dist/system-polyfills.js",
-                    'es6-module-loader': 'node_modules/es6-module-loader/dist/es6-module-loader.js',
-                    typescript: "node_modules/typescript/lib/typescript.js"
+                    'es6-module-loader': 'vendor/es6-module-loader/dist/es6-module-loader.js',
+                    systemjs: 'vendor/system.js/dist/system.src.js',
+                    'system-polyfills': 'vendor/system.js/dist/system-polyfills.js',
+                    typescript: 'node_modules/typescript/lib/typescript.js'
                 },
 
                 packages: {
@@ -47,10 +55,10 @@ module.exports = function (config) {
                     }
                 },
 
-                transpiler: "typescript"
+                transpiler: 'typescript'
             },
 
-            testFileSuffix: ".spec.ts"
+            testFileSuffix: '.spec.ts'
         },
 
 
@@ -93,4 +101,4 @@ module.exports = function (config) {
         // if true, Karma captures browsers, runs the tests and exits
         singleRun: false
     })
-}
+};
