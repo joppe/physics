@@ -1,4 +1,4 @@
-import {Point} from 'src/geometry/Point';
+import {Point} from 'ts/src/geometry/Point';
 
 describe('Point.constructor', () => {
     it('Accept an x and y argument', () => {

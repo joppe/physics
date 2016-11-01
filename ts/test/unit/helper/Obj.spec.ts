@@ -1,4 +1,4 @@
-import {Obj} from 'src/helper/Obj';
+import {Obj} from 'ts/src/helper/Obj';
 
 describe('Obj', () => {
     it('map', () => {

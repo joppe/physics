@@ -5,7 +5,7 @@ module.exports = function (config) {
     config.set({
 
         // base path that will be used to resolve all patterns (eg. files, exclude)
-        basePath: '../',
+        basePath: './',
 
 
         // frameworks to use
@@ -19,12 +19,12 @@ module.exports = function (config) {
         // list of files / patterns to load in the browser
         files: [
             {
-                pattern: 'src/**/*',
+                pattern: 'ts/src/**/*',
                 served: true,
                 included: false
             },
             {
-                pattern: 'test/unit/**/*',
+                pattern: 'ts/test/unit/**/*',
                 served: true,
                 included: false
             }
@@ -43,14 +43,14 @@ module.exports = function (config) {
         systemjs: {
             config: {
                 paths: {
-                    'es6-module-loader': 'vendor/es6-module-loader/dist/es6-module-loader.js',
-                    systemjs: 'vendor/system.js/dist/system.src.js',
-                    'system-polyfills': 'vendor/system.js/dist/system-polyfills.js',
+                    'es6-module-loader': 'dist/vendor/es6-module-loader/dist/es6-module-loader.js',
+                    systemjs: 'dist/vendor/system.js/dist/system.src.js',
+                    'system-polyfills': 'dist/vendor/system.js/dist/system-polyfills.js',
                     typescript: 'node_modules/typescript/lib/typescript.js'
                 },
 
                 packages: {
-                    'src': {
+                    'ts/src': {
                         defaultExtension: 'ts'
                     }
                 },

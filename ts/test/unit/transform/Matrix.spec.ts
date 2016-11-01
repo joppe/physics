@@ -1,5 +1,5 @@
-import {Matrix} from 'src/transform/Matrix';
-import {Point} from 'src/geometry/Point';
+import {Matrix} from 'ts/src/transform/Matrix';
+import {Point} from 'ts/src/geometry/Point';
 
 describe('Matrix.transformPoint', () => {
     it('Initially return the same point', () => {

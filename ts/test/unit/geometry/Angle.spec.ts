@@ -1,4 +1,4 @@
-import {Angle} from 'src/geometry/Angle';
+import {Angle} from 'ts/src/geometry/Angle';
 
 describe('Angle.constructor', () => {
     it('Accept an angle argument', () => {
