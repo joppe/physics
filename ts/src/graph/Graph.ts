@@ -195,6 +195,54 @@ class Graph {
     }
 
     /**
+     * @returns {Graph}
+     */
+    drawXAxis():Graph {
+        let y:number = 0;
+
+        if (this._yRange.min > 0) {
+            y = this._yRange.min;
+        } else if (this._yRange.max < 0) {
+            y = this._yRange.max;
+        }
+
+        this.drawLine(
+            new Point(this._xRange.min, y),
+            new Point(this._xRange.max, y),
+            {
+                strokeStyle: '#FF0000',
+                lineWidth: 2
+            }
+        );
+
+        return this;
+    }
+
+    /**
+     * @returns {Graph}
+     */
+    drawYAxis():Graph {
+        let x:number = 0;
+
+        if (this._xRange.min > 0) {
+            x = this._xRange.min;
+        } else if (this._xRange.max < 0) {
+            x = this._xRange.max;
+        }
+
+        this.drawLine(
+            new Point(x, this._yRange.min),
+            new Point(x, this._yRange.max),
+            {
+                strokeStyle: '#FF0000',
+                lineWidth: 2
+            }
+        );
+
+        return this;
+    }
+
+    /**
      * @param {HTMLElement} element
      */
     render(element:HTMLElement):void {
