@@ -7,7 +7,6 @@
         "outDir": "../dist"
     },
     "files": [
-        "../typings/index",
         "src/main"
     ]
 }
