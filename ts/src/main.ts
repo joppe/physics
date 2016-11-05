@@ -9,6 +9,8 @@ let graph:Graph = new Graph({
 graph
     .drawLine(new Point(0, 0), new Point(300, 300))
     .drawGrid(50, 100)
+    .drawXAxis()
+    .drawYAxis()
 ;
 
 graph.render(<HTMLElement>document.querySelector('body'));
