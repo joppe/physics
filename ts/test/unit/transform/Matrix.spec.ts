@@ -64,6 +64,19 @@ describe('Matrix.transformPoint', () => {
         expect(transformedPoint.y).toBe(1);
     });
 
+    it('Handle retranslate', () => {
+        let matrix = new Matrix(),
+            point = new Point(2, 1),
+            transformedPoint:Point;
+
+        matrix.translate(10, 10);
+        matrix.translate(15, 2);
+        transformedPoint = matrix.transformPoint(point);
+
+        expect(transformedPoint.x).toBe(27);
+        expect(transformedPoint.y).toBe(13);
+    });
+
     it('graph', () => {
         let matrix = new Matrix(),
             p1 = new Point(0, 0),
@@ -73,19 +86,20 @@ describe('Matrix.transformPoint', () => {
             pp2:Point,
             pp3:Point;
 
+        matrix.translate(30, 30);
         matrix.scale(1, -1);
         matrix.translate(0, -400);
 
         pp1 = matrix.transformPoint(p1);
-        expect(pp1.x).toBe(0);
-        expect(pp1.y).toBe(400);
+        expect(pp1.x).toBe(30);
+        expect(pp1.y).toBe(430);
 
         pp2 = matrix.transformPoint(p2);
-        expect(pp2.x).toBe(50);
-        expect(pp2.y).toBe(300);
+        expect(pp2.x).toBe(80);
+        expect(pp2.y).toBe(330);
 
         pp3 = matrix.transformPoint(p3);
-        expect(pp3.x).toBe(400);
-        expect(pp3.y).toBe(0);
+        expect(pp3.x).toBe(430);
+        expect(pp3.y).toBe(30);
     });
 });
