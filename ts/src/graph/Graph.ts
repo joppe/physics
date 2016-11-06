@@ -101,12 +101,9 @@ class Graph {
      * @returns {Graph}
      */
     setXRange(min:number, max:number):Graph {
-        let yTranslate:number = this._transform.yTranslate,
-            yScale:number = this._transform.yScale;
-
         this._transform.identity();
-        this._transform.translate(min, yTranslate);
-        this._transform.scale(this._size.width / (max - min), yScale);
+        this._transform.translate(min, 0);
+        this._transform.scale(this._size.width / (max - min), 1);
 
         this._xRange = {
             min,
@@ -122,16 +119,13 @@ class Graph {
      * @returns {Graph}
      */
     setYRange(min:number, max:number):Graph {
-        let xTranslate:number = this._transform.xTranslate,
-            xScale:number = this._transform.xScale;
-
         this._transform.identity();
 
         // Flip the y axis by applying a scale of -1
-        this._transform.scale(xScale, -1 * this._size.height / (max - min));
+        this._transform.scale(1, -1 * this._size.height / (max - min));
 
         // The y origin is now at the top, move the y origin downward by translating to negative max value
-        this._transform.translate(xTranslate, -max);
+        this._transform.translate(0, -max);
 
         this._yRange = {
             min,
