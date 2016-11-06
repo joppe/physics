@@ -109,12 +109,18 @@ class Graph {
     /**
      * @type {object}
      */
-    private _xRange:RangeInterface;
+    private _xRange:RangeInterface = {
+        min: 0,
+        max: 0
+    };
 
     /**
      * @type {object}
      */
-    private _yRange:RangeInterface;
+    private _yRange:RangeInterface = {
+        min: 0,
+        max: 0
+    };
 
     /**
      * @param {object} size
@@ -137,20 +143,27 @@ class Graph {
      * @returns {Graph}
      */
     setXRange(min:number, max:number):Graph {
-        let yTranslate:number = this._transform.yTranslate,
-            yScale:number = this._transform.yScale;
-
-        this._transform.identity();
-        this._transform.translate(OFFSET, OFFSET);
-        this._transform.translate(min, yTranslate);
-        this._transform.scale(this._size.width / (max - min), yScale);
-
         this._xRange = {
             min,
             max
         };
+        this.setRange();
 
         return this;
+    }
+
+    private setRange():void {
+        this._transform.identity();
+        this._transform.scale(1, -1);
+        this._transform.translate(this._xRange.min, -this._yRange.max);
+        this._transform.translate(OFFSET, OFFSET);
+        this._transform.scale(
+            this._size.width / (this._xRange.max - this._xRange.min),
+            this._size.height / (this._yRange.max - this._yRange.min)
+        );
+
+        window.console.log(this._transform.xTranslate, this._transform.yTranslate);
+        window.console.log(this._transform.xScale, this._transform.yScale);
     }
 
     /**
@@ -159,22 +172,11 @@ class Graph {
      * @returns {Graph}
      */
     setYRange(min:number, max:number):Graph {
-        let xTranslate:number = this._transform.xTranslate,
-            xScale:number = this._transform.xScale;
-
-        this._transform.identity();
-        this._transform.translate(OFFSET, OFFSET);
-
-        // Flip the y axis by applying a scale of -1
-        this._transform.scale(xScale, -1 * this._size.height / (max - min));
-
-        // The y origin is now at the top, move the y origin downward by translating to negative max value
-        this._transform.translate(xTranslate, -max);
-
         this._yRange = {
             min,
             max
         };
+        this.setRange();
 
         return this;
     }

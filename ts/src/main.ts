@@ -7,12 +7,12 @@ let graph:Graph = new Graph({
 });
 
 graph
-    .setXRange(0, 200)
-    .setYRange(-200, 200)
+    // .setXRange(0, 200)
+    .setYRange(0, 200)
     .drawGrid(50, 50)
-    .drawXAxis()
-    .drawYAxis()
-    .drawText('Hello world', new Point(100, 100))
+    // .drawXAxis()
+    // .drawYAxis()
+    // .drawText('Hello world', new Point(100, 100))
     .drawYLabels(50)
     .drawXLabels(50)
     .drawLine(new Point(0, 0), new Point(300, 300))

@@ -122,13 +122,9 @@ class Matrix {
 
     /**
      * Constructor
-     *
-     * @param {object} [options]
      */
-    constructor(options:TransformOptions = DEFAULT_MATRIX_OPTIONS) {
+    constructor() {
         this.identity();
-
-        this.transform(options);
     }
 
     /**
