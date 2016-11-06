@@ -38,8 +38,8 @@ class Range implements Iterable<number> {
         }
 
         if (true === align) {
-            this._min = Math.floor(min / step) * step;
-            this._max = Math.floor(max / step) * step;
+            this._min = min < 0 ? Math.ceil(min / step) * step : Math.floor(min / step) * step;
+            this._max = max < 0 ? Math.ceil(max / step) * step : Math.floor(max / step) * step;
         } else {
             this._min = min;
             this._max = max;
