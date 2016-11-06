@@ -3,6 +3,7 @@ import {Matrix} from './../transform/Matrix';
 import {Canvas} from './../dom/Canvas';
 import {Point} from './../geometry/Point';
 import {Obj} from './../helper/Obj';
+import {Range} from './../range/Range';
 
 /**
  * When using:
@@ -25,6 +26,26 @@ import {Obj} from './../helper/Obj';
  */
 
 /**
+ * @interface TextStyleInterface
+ */
+interface TextStyleInterface {
+    /**
+     * @type {string}
+     */
+    font?:string,
+
+    /**
+     * @type {string}
+     */
+    fillStyle?:string;
+
+    /**
+     * @type {string}
+     */
+    textAlign?:string;
+}
+
+/**
  * @interface LineStyleInterface
  */
 interface LineStyleInterface {
@@ -40,9 +61,9 @@ interface LineStyleInterface {
 }
 
 /**
- * @interface Range
+ * @interface RangeInterface
  */
-interface Range {
+interface RangeInterface {
     /**
      * @type {number}
      */
@@ -56,6 +77,11 @@ interface Range {
 
 const
     OFFSET:number = 30,
+    DEFAULT_TEXT_STYLE:TextStyleInterface = {
+        font: '10pt Arial',
+        fillStyle: '#000000',
+        textAlign: 'left'
+    },
     DEFAULT_LINE_STYLE:LineStyleInterface = {
         strokeStyle: '#000000',
         lineWidth: 1
@@ -83,19 +109,18 @@ class Graph {
     /**
      * @type {object}
      */
-    private _xRange:Range;
+    private _xRange:RangeInterface;
 
     /**
      * @type {object}
      */
-    private _yRange:Range;
+    private _yRange:RangeInterface;
 
     /**
      * @param {object} size
      */
     constructor(size:SizeInterface) {
         this._transform = new Matrix();
-        this._transform.translate(OFFSET, OFFSET);
         this._canvas = new Canvas(size);
         this._size = {
             width: size.width - (2 * OFFSET),
@@ -112,8 +137,13 @@ class Graph {
      * @returns {Graph}
      */
     setXRange(min:number, max:number):Graph {
-        this._transform.translate(min, 0);
-        this._transform.scale(this._size.width / (max - min), 1);
+        let yTranslate:number = this._transform.yTranslate,
+            yScale:number = this._transform.yScale;
+
+        this._transform.identity();
+        this._transform.translate(OFFSET, OFFSET);
+        this._transform.translate(min, yTranslate);
+        this._transform.scale(this._size.width / (max - min), yScale);
 
         this._xRange = {
             min,
@@ -129,11 +159,17 @@ class Graph {
      * @returns {Graph}
      */
     setYRange(min:number, max:number):Graph {
+        let xTranslate:number = this._transform.xTranslate,
+            xScale:number = this._transform.xScale;
+
+        this._transform.identity();
+        this._transform.translate(OFFSET, OFFSET);
+
         // Flip the y axis by applying a scale of -1
-        this._transform.scale(1, -1 * this._size.height / (max - min));
+        this._transform.scale(xScale, -1 * this._size.height / (max - min));
 
         // The y origin is now at the top, move the y origin downward by translating to negative max value
-        this._transform.translate(0, -max);
+        this._transform.translate(xTranslate, -max);
 
         this._yRange = {
             min,
@@ -168,20 +204,40 @@ class Graph {
     }
 
     /**
-     * @param {number} xStep
-     * @param {number} yStep
+     * @param {string} text
+     * @param {Point} position
+     * @param {object} [textStyle]
      * @returns {Graph}
      */
-    drawGrid(xStep:number, yStep:number):Graph {
-        let style:LineStyleInterface = {
-            strokeStyle: '#88abcf'
-        };
+    drawText(text:string, position:Point, textStyle:TextStyleInterface = <TextStyleInterface>{}) {
+        let context = this._canvas.context,
+            styling:TextStyleInterface = <TextStyleInterface>Obj.merge(textStyle, DEFAULT_TEXT_STYLE);
+
+        Obj.map(styling, (value:any, property:string) => {
+            context[property] = styling[property];
+        });
+
+        context.fillText(text, position.x, position.y);
+
+        return this;
+    }
+
+    /**
+     * @param {number} xStep
+     * @param {number} yStep
+     * @param {object} [lineStyle]
+     * @returns {Graph}
+     */
+    drawGrid(xStep:number, yStep:number, lineStyle:LineStyleInterface = <LineStyleInterface>{}):Graph {
+        let styling:LineStyleInterface = <LineStyleInterface>Obj.merge({
+                strokeStyle: '#88abcf'
+            }, lineStyle, DEFAULT_LINE_STYLE);
 
         for (let x = this._xRange.min; x <= this._xRange.max; x += xStep) {
             this.drawLine(
                 new Point(x, this._yRange.min),
                 new Point(x, this._yRange.max),
-                style
+                styling
             );
         }
 
@@ -189,7 +245,7 @@ class Graph {
             this.drawLine(
                 new Point(this._xRange.min, y),
                 new Point(this._xRange.max, y),
-                style
+                styling
             );
         }
 
@@ -197,49 +253,125 @@ class Graph {
     }
 
     /**
+     * @param {object} [lineStyle]
      * @returns {Graph}
      */
-    drawXAxis():Graph {
-        let y:number = 0;
+    drawAxes(lineStyle:LineStyleInterface = <LineStyleInterface>{}):Graph {
+        return this
+            .drawXAxis(lineStyle)
+            .drawYAxis(lineStyle)
+        ;
+    }
 
-        if (this._yRange.min > 0) {
+    /**
+     * @param {object} [lineStyle]
+     * @returns {Graph}
+     */
+    drawXAxis(lineStyle:LineStyleInterface = <LineStyleInterface>{}):Graph {
+        let styling:LineStyleInterface = <LineStyleInterface>Obj.merge({
+                strokeStyle: '#FF0000',
+                lineWidth: 2
+            }, lineStyle, DEFAULT_LINE_STYLE),
+            y:number = 0;
+
+        if (this._yRange.min > 0 || this._yRange.max < 0) {
             y = this._yRange.min;
-        } else if (this._yRange.max < 0) {
-            y = this._yRange.max;
         }
 
         this.drawLine(
             new Point(this._xRange.min, y),
             new Point(this._xRange.max, y),
-            {
-                strokeStyle: '#FF0000',
-                lineWidth: 2
-            }
+            styling
         );
 
         return this;
     }
 
     /**
+     * @param {object} [lineStyle]
      * @returns {Graph}
      */
-    drawYAxis():Graph {
-        let x:number = 0;
+    drawYAxis(lineStyle:LineStyleInterface = <LineStyleInterface>{}):Graph {
+        let styling:LineStyleInterface = <LineStyleInterface>Obj.merge({
+                strokeStyle: '#FF0000',
+                lineWidth: 2
+            }, lineStyle, DEFAULT_LINE_STYLE),
+            x:number = 0;
 
-        if (this._xRange.min > 0) {
+        if (this._xRange.min > 0 || this._xRange.max < 0) {
             x = this._xRange.min;
-        } else if (this._xRange.max < 0) {
-            x = this._xRange.max;
         }
 
         this.drawLine(
             new Point(x, this._yRange.min),
             new Point(x, this._yRange.max),
-            {
-                strokeStyle: '#FF0000',
-                lineWidth: 2
-            }
+            styling
         );
+
+        return this;
+    }
+
+    /**
+     * @param {number} xStep
+     * @param {number} yStep
+     * @param {object} [textStyle]
+     * @returns {Graph}
+     */
+    drawLabels(xStep, yStep, textStyle:TextStyleInterface = <TextStyleInterface>{}):Graph {
+        this
+            .drawXLabels(xStep, textStyle)
+            .drawYLabels(yStep, textStyle)
+        ;
+
+        return this;
+    }
+
+    /**
+     * @param {number} step
+     * @param {object} [textStyle]
+     * @returns {Graph}
+     */
+    drawYLabels(step:number, textStyle:TextStyleInterface = <TextStyleInterface>{}):Graph {
+        let styling:TextStyleInterface = <TextStyleInterface>Obj.merge(textStyle, DEFAULT_TEXT_STYLE),
+            x:number = 0,
+            range:Range = new Range(this._yRange.min, this._yRange.max, step, true);
+
+        if (this._xRange.min > 0 || this._xRange.max < 0) {
+            x = this._xRange.min;
+        }
+
+        for (let y of range) {
+            let position:Point = this._transform.transformPoint(new Point(x, y));
+
+            position.move(-30, 5);
+
+            this.drawText(String(y), position, styling);
+        }
+
+        return this;
+    }
+
+    /**
+     * @param {number} step
+     * @param {object} [textStyle]
+     * @returns {Graph}
+     */
+    drawXLabels(step:number, textStyle:TextStyleInterface = <TextStyleInterface>{}):Graph {
+        let styling:TextStyleInterface = <TextStyleInterface>Obj.merge(textStyle, DEFAULT_TEXT_STYLE),
+            y:number = 0,
+            range:Range = new Range(this._xRange.min, this._xRange.max, step, true);
+
+        if (this._yRange.min > 0 || this._yRange.max < 0) {
+            y = this._yRange.min;
+        }
+
+        for (let x of range) {
+            let position:Point = this._transform.transformPoint(new Point(x, y));
+
+            position.move(-5, 15);
+
+            this.drawText(String(x), position, styling);
+        }
 
         return this;
     }
@@ -250,6 +382,32 @@ class Graph {
     render(element:HTMLElement):void {
         this._canvas.appendTo(element);
     }
+
+    /**
+     * @param {Function} func
+     * @param {number} [step]
+     * @param {string} [color]
+     * @returns {Graph}
+     *
+    plot(func, step = 1, color = '#ff0000') {
+        let previous = null;
+
+        for (let x = this.axes.x.min; x <= this.axes.x.max; x += step) {
+            let y = func(x),
+                point = this.posToPixel(x, y);
+
+            if (null !== previous) {
+                this.drawLine(previous, point, {
+                    strokeStyle: color
+                });
+            }
+
+            previous = point;
+        }
+
+        return this;
+    }
+    /**/
 }
 
 export {Graph};
