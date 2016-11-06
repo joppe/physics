@@ -19,6 +19,12 @@ import {Obj} from './../helper/Obj';
  */
 
 /**
+ * TODO:
+ * - accept line style for drawing grid/axis
+ * - default line style for grid/axis
+ */
+
+/**
  * @interface LineStyleInterface
  */
 interface LineStyleInterface {
@@ -49,6 +55,7 @@ interface Range {
 }
 
 const
+    OFFSET:number = 30,
     DEFAULT_LINE_STYLE:LineStyleInterface = {
         strokeStyle: '#000000',
         lineWidth: 1
@@ -88,8 +95,12 @@ class Graph {
      */
     constructor(size:SizeInterface) {
         this._transform = new Matrix();
+        this._transform.translate(OFFSET, OFFSET);
         this._canvas = new Canvas(size);
-        this._size = size;
+        this._size = {
+            width: size.width - (2 * OFFSET),
+            height: size.height - (2 * OFFSET)
+        };
 
         this.setXRange(0, this._size.width);
         this.setYRange(0, this._size.height);
@@ -101,7 +112,6 @@ class Graph {
      * @returns {Graph}
      */
     setXRange(min:number, max:number):Graph {
-        this._transform.identity();
         this._transform.translate(min, 0);
         this._transform.scale(this._size.width / (max - min), 1);
 
@@ -119,8 +129,6 @@ class Graph {
      * @returns {Graph}
      */
     setYRange(min:number, max:number):Graph {
-        this._transform.identity();
-
         // Flip the y axis by applying a scale of -1
         this._transform.scale(1, -1 * this._size.height / (max - min));
 
