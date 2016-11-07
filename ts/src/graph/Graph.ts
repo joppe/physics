@@ -128,10 +128,7 @@ class Graph {
     constructor(size:SizeInterface) {
         this._transform = new Matrix();
         this._canvas = new Canvas(size);
-        this._size = {
-            width: size.width - (2 * OFFSET),
-            height: size.height - (2 * OFFSET)
-        };
+        this._size = size;
 
         this.setXRange(0, this._size.width);
         this.setYRange(0, this._size.height);
@@ -147,23 +144,9 @@ class Graph {
             min,
             max
         };
-        this.setRange();
+        this.updateTransform();
 
         return this;
-    }
-
-    private setRange():void {
-        this._transform.identity();
-        this._transform.scale(1, -1);
-        this._transform.translate(this._xRange.min, -this._yRange.max);
-        this._transform.translate(OFFSET, OFFSET);
-        this._transform.scale(
-            this._size.width / (this._xRange.max - this._xRange.min),
-            this._size.height / (this._yRange.max - this._yRange.min)
-        );
-
-        window.console.log(this._transform.xTranslate, this._transform.yTranslate);
-        window.console.log(this._transform.xScale, this._transform.yScale);
     }
 
     /**
@@ -176,9 +159,34 @@ class Graph {
             min,
             max
         };
-        this.setRange();
+        this.updateTransform();
 
         return this;
+    }
+
+    /**
+     * Set the range
+     */
+    private updateTransform():void {
+        this._transform.identity();
+        
+        // Flip the y-axis
+        this._transform.scale(1, -1);
+
+        // Set the origin to the bottom
+        this._transform.translate(0, -this._size.height);
+
+        // Apply the offset
+        this._transform.translate(OFFSET, OFFSET);
+
+        // Apply the scale
+        this._transform.scale(
+            (this._size.width - 2 * OFFSET) / (this._xRange.max - this._xRange.min),
+            (this._size.height - 2 * OFFSET) / (this._yRange.max - this._yRange.min)
+        );
+
+        // Set the bottom left corner equal to the mininmum values of axises 
+        this._transform.translate(this._xRange.min, this._yRange.min);
     }
 
     /**
@@ -383,6 +391,18 @@ class Graph {
      */
     render(element:HTMLElement):void {
         this._canvas.appendTo(element);
+    }
+
+    /**
+     * Check if a given point can be rendered on the Graph
+     * 
+     * @returns {boolean}
+     */
+    isValidPoint(point:Point):boolean {
+        return (
+            point.x >= this._xRange.min && point.x <= this._xRange.max &&
+            point.y >= this._yRange.min && point.y <= this._yRange.max
+        );
     }
 
     /**
