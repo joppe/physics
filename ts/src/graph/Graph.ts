@@ -20,12 +20,6 @@ import {Range} from './../range/Range';
  */
 
 /**
- * TODO:
- * - accept line style for drawing grid/axis
- * - default line style for grid/axis
- */
-
-/**
  * @interface TextStyleInterface
  */
 interface TextStyleInterface {
@@ -196,6 +190,10 @@ class Graph {
      * @returns {Graph}
      */
     drawLine(start:Point, end:Point, lineStyle:LineStyleInterface = <LineStyleInterface>{}) {
+        if (false === this.isValidPoint(start) || false === this.isValidPoint(end)) {
+            return this;
+        }
+
         let context = this._canvas.context,
             styling:LineStyleInterface = <LineStyleInterface>Obj.merge(lineStyle, DEFAULT_LINE_STYLE),
             p1:Point = this._transform.transformPoint(start),
@@ -406,22 +404,19 @@ class Graph {
     }
 
     /**
-     * @param {Function} func
-     * @param {number} [step]
-     * @param {string} [color]
+     * @param {Point[]} values
+     * @param {object} lineStyle
      * @returns {Graph}
-     *
-    plot(func, step = 1, color = '#ff0000') {
-        let previous = null;
+     */
+    plot(values:Point[], lineStyle:LineStyleInterface = <LineStyleInterface>{}) {
+        let previous:Point,
+            styling:LineStyleInterface = <LineStyleInterface>Obj.merge({
+                strokeStyle: '#308c2c'
+            }, lineStyle, DEFAULT_LINE_STYLE);
 
-        for (let x = this.axes.x.min; x <= this.axes.x.max; x += step) {
-            let y = func(x),
-                point = this.posToPixel(x, y);
-
-            if (null !== previous) {
-                this.drawLine(previous, point, {
-                    strokeStyle: color
-                });
+        for (let point of values) {
+            if (undefined !== previous) {
+                this.drawLine(previous, point, styling);
             }
 
             previous = point;
@@ -429,7 +424,6 @@ class Graph {
 
         return this;
     }
-    /**/
 }
 
 export {Graph};
