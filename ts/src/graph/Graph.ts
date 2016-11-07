@@ -185,8 +185,8 @@ class Graph {
             (this._size.height - 2 * OFFSET) / (this._yRange.max - this._yRange.min)
         );
 
-        // Set the bottom left corner equal to the mininmum values of axises 
-        this._transform.translate(this._xRange.min, this._yRange.min);
+        // Set the bottom left corner equal to the minimum values of axises
+        this._transform.translate(-this._xRange.min, -this._yRange.min);
     }
 
     /**
