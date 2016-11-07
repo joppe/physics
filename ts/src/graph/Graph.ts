@@ -408,7 +408,7 @@ class Graph {
      * @param {object} lineStyle
      * @returns {Graph}
      */
-    plot(values:Point[], lineStyle:LineStyleInterface = <LineStyleInterface>{}) {
+    plot(values:Iterable<Point>, lineStyle:LineStyleInterface = <LineStyleInterface>{}) {
         let previous:Point,
             styling:LineStyleInterface = <LineStyleInterface>Obj.merge({
                 strokeStyle: '#308c2c'
