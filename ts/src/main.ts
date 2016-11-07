@@ -1,5 +1,6 @@
 import {Graph} from './graph/Graph';
 import {Point} from './geometry/Point';
+import {Plotter} from './graph/Plotter';
 
 let graph:Graph = new Graph({
     width: 400,
@@ -7,27 +8,16 @@ let graph:Graph = new Graph({
 });
 
 graph
-    // .setXRange(0, 200)
+    .setXRange(-200, 200)
     .setYRange(0, 200)
     .drawGrid(50, 50)
-    // .drawXAxis()
-    // .drawYAxis()
-    // .drawText('Hello world', new Point(100, 100))
+    .drawXAxis()
+    .drawYAxis()
     .drawYLabels(50)
     .drawXLabels(50)
-    .drawLine(new Point(0, 0), new Point(300, 300))
+    .plot(<Point[]>new Plotter((x:number):number => {
+        return 50 + 50 * Math.sin(x / 10);
+    }, 0, 200, 0.5))
 ;
 
-/*/
- graph
- .setRange('x', 0, 20)
- .setRange('y', -10, 10)
- .drawGrid(1, 1)
- .drawAxes()
- .drawLabels(2, 2)
- .plot((x) => {
- return x*x + 2;
- }, 0.1)
- ;
-/**/
 graph.render(<HTMLElement>document.querySelector('body'));
