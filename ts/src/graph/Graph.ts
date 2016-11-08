@@ -170,7 +170,7 @@ class Graph {
         // Set the origin to the bottom
         this._transform.translate(0, -this._size.height);
 
-        // Apply the offset
+        // Apply the offset, x will go to the right and y will go up (because of the -1 scale)
         this._transform.translate(OFFSET, OFFSET);
 
         // Apply the scale
@@ -179,7 +179,7 @@ class Graph {
             (this._size.height - 2 * OFFSET) / (this._yRange.max - this._yRange.min)
         );
 
-        // Set the bottom left corner equal to the minimum values of axises
+        // Set the bottom left corner equal to the minimum values of axises, use negative y because of the -1 scale
         this._transform.translate(-this._xRange.min, -this._yRange.min);
     }
 
