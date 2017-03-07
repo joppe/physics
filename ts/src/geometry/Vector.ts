@@ -66,6 +66,14 @@ export class Vector {
     }
 
     /**
+     * @param {number} k
+     * @returns {Vector}
+     */
+    multiply(k:number):Vector {
+        return new Vector(k * this.x, k * this.y);
+    }
+
+    /**
      * @param {number} scale
      * @returns {Vector}
      */
@@ -89,17 +97,33 @@ export class Vector {
      * @returns {Vector}
      */
     unit():Vector {
-        return this.scale(1 / this.length);
+        const length:number = this.length;
+
+        if (0 !== length) {
+            this.scale(1 / length);
+        }
+
+        return this;
     }
 
     /**
-     * @param {number} x
-     * @param {number} y
+     * @param {Vector} vector
      * @returns {Vector}
      */
-    move(x:number, y:number):Vector {
-        this._x += x;
-        this._y += y;
+    incrementBy(vector:Vector):Vector {
+        this._x += vector.x;
+        this._y += vector.y;
+
+        return this;
+    }
+
+    /**
+     * @param {Vector} vector
+     * @returns {Vector}
+     */
+    decrementBy(vector:Vector):Vector {
+        this._x -= vector.x;
+        this._y -= vector.y;
 
         return this;
     }
@@ -113,7 +137,6 @@ export class Vector {
     }
 
     /**
-     * Move the
      * @param {number} angle
      * @returns {Vector}
      */
