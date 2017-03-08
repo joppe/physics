@@ -1,4 +1,8 @@
 /**
+ * @see https://www.paulirish.com/2011/requestanimationframe-for-smart-animating/
+ */
+
+/**
  * @interface RequestAnimationFrameInterface
  */
 interface RequestAnimationFrameInterface {
