@@ -48,7 +48,9 @@ if (undefined === rAF) {
         let last:number = 0;
 
         rAF = (callback:FrameRequestCallback):number => {
-            const now:number = new Date().getTime();
+            const now:number = (new Date()).getTime();
+
+            // Set timeout in milliseconds to get 60 fps
             const timeToCall:number = Math.max(0, 16 - (now - last));
             const id:number = window.setTimeout(():void => {
                 callback(now + timeToCall);
