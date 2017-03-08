@@ -2,9 +2,9 @@ import {Vector} from './../geometry/Vector';
 import {zero} from './zero';
 
 /**
- * @interface AddFunctionInterface
+ * @interface AddInterface
  */
-interface AddFunctionInterface {
+interface AddInterface {
     /**
      * @param {Vector[]} forces
      * @returns {Vector}
@@ -16,7 +16,7 @@ interface AddFunctionInterface {
  * @param {Vector[]} forces
  * @returns {Vector}
  */
-export const add:AddFunctionInterface = (...forces:Vector[]):Vector => {
+export const add:AddInterface = (...forces:Vector[]):Vector => {
     return forces.reduce((sum:Vector, force:Vector):Vector => {
         return sum.incrementBy(force);
     }, zero());

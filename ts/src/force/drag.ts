@@ -2,9 +2,9 @@ import {Vector} from './../geometry/Vector';
 import {zero} from './zero';
 
 /**
- * @interface LinearDragFunctionInterface
+ * @interface LinearDragInterface
  */
-interface LinearDragFunctionInterface {
+interface LinearDragInterface {
     /**
      * @param {number} k
      * @param {Vector} velocity
@@ -18,7 +18,7 @@ interface LinearDragFunctionInterface {
  * @param {Vector} velocity
  * @returns {Vector}
  */
-export const linearDrag:LinearDragFunctionInterface = (k:number, velocity:Vector):Vector => {
+export const linearDrag:LinearDragInterface = (k:number, velocity:Vector):Vector => {
     if (0 === velocity.length) {
         return zero();
     }

@@ -1,9 +1,9 @@
 import {Vector} from './../geometry/Vector';
 
 /**
- * @interface ConstantGravityFunctionInterface
+ * @interface ConstantGravityInterface
  */
-interface ConstantGravityFunctionInterface {
+interface ConstantGravityInterface {
     /**
      * @param {number} mass
      * @param {number} magnitude
@@ -17,6 +17,6 @@ interface ConstantGravityFunctionInterface {
  * @param {number} magnitude
  * @returns {Vector}
  */
-export const constantGravity:ConstantGravityFunctionInterface = (mass:number, magnitude:number):Vector => {
+export const constantGravity:ConstantGravityInterface = (mass:number, magnitude:number):Vector => {
     return new Vector(0, mass * magnitude);
 };
