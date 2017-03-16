@@ -67,7 +67,6 @@ export class Timer {
     reset():void {
         this.set(timestamp());
         this._stopTime = undefined;
-
     }
 
     /**
