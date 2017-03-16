@@ -37,6 +37,12 @@ export class Timer {
     private _stopTime:number;
 
     /**
+     * @type {number}
+     * @private
+     */
+    private _lastTime:number;
+
+    /**
      * @type {number[]}
      * @private
      */
@@ -69,6 +75,7 @@ export class Timer {
      */
     set(time:number):void {
         this._startTime = time;
+        this._lastTime = time;
         this._timestamps = [this._startTime];
     }
 
@@ -82,9 +89,17 @@ export class Timer {
 
     /**
      * Store the timestamp
+     *
+     * @returns {number}
      */
-    time():void {
-        this._timestamps.push(timestamp());
+    time():number {
+        const now:number = timestamp();
+        const time:number = now - this._lastTime;
+
+        this._lastTime = now;
+        this._timestamps.push(now);
+
+        return time;
     }
 
     /**

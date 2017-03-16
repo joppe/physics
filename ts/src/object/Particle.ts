@@ -1,4 +1,3 @@
-import {Point} from './../geometry/Point';
 import {Vector} from './../geometry/Vector';
 
 /**
@@ -6,10 +5,10 @@ import {Vector} from './../geometry/Vector';
  */
 export class Particle {
     /**
-     * @type {Point}
+     * @type {Vector}
      * @private
      */
-    private _position:Point;
+    private _position:Vector;
 
     /**
      * @type {Vector}
@@ -30,16 +29,16 @@ export class Particle {
     private _mass:number;
 
     /**
-     * @returns {Point}
+     * @returns {Vector}
      */
-    get position():Point {
+    get position():Vector {
         return this._position;
     }
 
     /**
-     * @param {Point} position
+     * @param {Vector} position
      */
-    set position(position:Point) {
+    set position(position:Vector) {
         this._position = position;
     }
 
@@ -58,13 +57,27 @@ export class Particle {
     }
 
     /**
+     * @returns {number}
+     */
+    get mass():number {
+        return this._mass;
+    }
+
+    /**
+     * @returns {number}
+     */
+    get charge():number {
+        return this._charge;
+    }
+
+    /**
      * @param {number} [mass=1]
      * @param {number} [charge=0]
      */
     constructor(mass:number = 1, charge:number = 0) {
         this._mass = mass;
         this._charge = charge;
-        this._position = new Point(0, 0);
+        this._position = new Vector(0, 0);
         this._velocity = new Vector(0, 0);
     }
 }

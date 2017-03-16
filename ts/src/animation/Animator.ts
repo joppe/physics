@@ -37,7 +37,7 @@ export class Animator {
     constructor(func:AnimatableInterface) {
         this._wrapper = (time:number):void => {
             if (func(time)) {
-                this._animationId = rAF(this._wrapper);
+                this._animationId = rAF.call(window, this._wrapper);
             }
         };
     }
@@ -46,13 +46,13 @@ export class Animator {
      * Start the animator
      */
     start():void {
-        this._animationId = rAF(this._wrapper);
+        this._animationId = rAF.call(window, this._wrapper);
     }
 
     /**
      * Stop the animator
      */
     stop():void {
-        cAF(this._animationId);
+        cAF.call(window, this._animationId);
     }
 }

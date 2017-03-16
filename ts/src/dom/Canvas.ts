@@ -55,6 +55,17 @@ class Canvas {
 
         return this;
     }
+
+    /**
+     * Clear the canvas
+     *
+     * @returns {Canvas}
+     */
+    clear():Canvas {
+        this.context.clearRect(0, 0, this.width, this.height);
+
+        return this;
+    }
 }
 
 export {Canvas};
