@@ -1,4 +1,4 @@
-import {Timer} from './../Timer/Timer';
+import {Timer} from './../timer/Timer';
 
 /**
  * @class FPS
