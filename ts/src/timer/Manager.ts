@@ -1,9 +1,9 @@
 import {Timer} from './Timer';
 
 /**
- * @interface TimersRegistryInterface
+ * @interface TimerRegistryInterface
  */
-interface TimersRegistryInterface {
+interface TimerRegistryInterface {
     /**
      * @type {Timer}
      */
@@ -11,52 +11,53 @@ interface TimersRegistryInterface {
 }
 
 /**
- * @interface ManagerInterface
+ * @interface TimerManagerInterface
  */
-export interface ManagerInterface {
+export interface TimerManagerInterface {
     /**
+     * Get a timer by it's id.
+     *
      * @param {string} id
      * @returns {Timer}
      */
     get(id:string):Timer;
 
     /**
-     * @param {string} id
-     * @returns {Timer}
-     */
-    start(id:string):Timer;
-
-    /**
-     * @param {string} id
-     * @returns {Timer}
-     */
-    end(id:string):Timer;
-
-    /**
-     * @param {string} id
-     * @returns {Timer}
-     */
-    time(id:string):Timer;
-
-    /**
+     * Start a timer.
+     *
      * @param {string} id
      * @returns {number}
      */
-    duration(id:string):number;
+    start(id:string):number;
+
+    /**
+     * Stop a timer.
+     *
+     * @param {string} id
+     * @returns {number}
+     */
+    stop(id:string):number;
+
+    /**
+     * Add timestamp to timer.
+     *
+     * @param {string} id
+     * @returns {number}
+     */
+    time(id:string):number;
 }
 
 /**
- * @type {TimersRegistryInterface}
+ * @type {TimerRegistryInterface}
  */
-const timers:TimersRegistryInterface = {};
+const timers:TimerRegistryInterface = {};
 
 /**
- * @type {ManagerInterface}
+ * @type {TimerManagerInterface}
  */
-export const Manager:ManagerInterface  = {
+export const TimerManager:TimerManagerInterface = {
     /**
-     * @param {string} id
-     * @returns {Timer}
+     * @inheritDoc
      */
     get(id:string):Timer {
         if (undefined === timers[id]) {
@@ -67,55 +68,39 @@ export const Manager:ManagerInterface  = {
     },
 
     /**
-     * @param {string} id
-     * @returns {Timer}
+     * @inheritDoc
      */
-    start(id:string):Timer {
-        let timer:Timer = Manager.get(id);
+    start(id:string):number {
+        let timer:Timer = TimerManager.get(id);
 
-        timer.start();
-
-        return timer;
+        return timer.start();
     },
 
     /**
-     * @param {string} id
-     * @returns {Timer}
+     * @inheritDoc
      */
-    end(id:string):Timer {
-        let timer = Manager.get(id);
+    stop(id:string):number {
+        let timer = TimerManager.get(id);
 
-        timer.stop();
-
-        return timer;
-    },
-
-    /**
-     * @param {string} id
-     * @returns {Timer}
-     */
-    time(id:string):Timer {
-        let timer = Manager.get(id);
-
-        timer.time();
-
-        return timer;
+        return timer.stop();
     },
 
     /**
      * @param {string} id
      * @returns {number}
      */
-    duration(id:string):number {
-        return Manager.get(id).getDuration();
+    time(id:string):number {
+        let timer = TimerManager.get(id);
+
+        return timer.time();
     },
 
     /**
-     * This should return an iterator
+     * @todo This should return an iterator
      *
-     * @returns {TimersRegistryInterface}
+     * @returns {TimerRegistryInterface}
      */
-    getTimers():TimersRegistryInterface {
+    getTimers():TimerRegistryInterface {
         return timers;
     }
 };

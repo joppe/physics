@@ -1,9 +1,9 @@
 import {timestamp} from './../datetime/timestamp';
 
 /**
- * @interface EntryInterface
+ * @interface TimeEntryInterface
  */
-interface EntryInterface {
+interface TimeEntryInterface {
     /**
      * @type {number}
      */
@@ -49,51 +49,65 @@ export class Timer {
     private _timestamps:number[] = [];
 
     /**
-     * Start the times
+     * Start the timer.
      *
+     * @returns {number}
      * @throws Error
      */
-    start():void {
+    start():number {
         if (undefined !== this._startTime) {
             throw new Error('Timer already started.');
         }
 
         this.reset();
+
+        return this._startTime;
     }
 
     /**
-     * Reset the start time
+     * Reset the start and stop time.
+     *
+     * @returns {Timer}
      */
-    reset():void {
-        this.set(timestamp());
-        this._stopTime = undefined;
+    reset():Timer {
+        return this.set(timestamp());
     }
 
     /**
+     * Set the start time.
+     *
      * @param {number} time
+     * @returns {Timer}
      */
-    set(time:number):void {
+    set(time:number):Timer {
         this._startTime = time;
         this._lastTime = time;
         this._timestamps = [this._startTime];
+        this._stopTime = undefined;
+
+        return this;
     }
 
     /**
-     * Stop the timer
+     * Stop the timer.
+     *
+     * @returns {number}
      */
-    stop():void {
+    stop():number {
         this._stopTime = timestamp();
         this._timestamps.push(this._stopTime);
+
+        return this._stopTime;
     }
 
     /**
-     * Store the timestamp
+     * Store the current timestamp.
      *
      * @returns {number}
      */
     time():number {
         const now:number = timestamp();
-        const time:number = now - this._lastTime;
+        const time:number = this.getElapsed(now, this._lastTime);
 
         this._lastTime = now;
         this._timestamps.push(now);
@@ -102,18 +116,18 @@ export class Timer {
     }
 
     /**
-     * This should return an iterator
+     * @todo This should return an iterator
      *
-     * @returns {EntryInterface[]}
+     * @returns {TimeEntryInterface[]}
      */
-    getEntries():EntryInterface[] {
+    getEntries():TimeEntryInterface[] {
         let lastTime:number = this._startTime;
 
         return this._timestamps.map((time:number) => {
-            const entry:EntryInterface = {
+            const entry:TimeEntryInterface = {
                 time,
-                delta: time - lastTime,
-                elapsed: time - this._startTime
+                delta: this.getElapsed(time, lastTime),
+                elapsed: this.getElapsed(time, this._startTime)
             };
 
             lastTime = time;
@@ -123,26 +137,32 @@ export class Timer {
     }
 
     /**
+     * Get the time between two timestamps.
+     *
+     * @param {number}  [now=timestamp()]
+     * @param {number} [past=this._startTime]
      * @returns {number}
      * @throws {Error}
      */
-    getElapsed(now:number = timestamp()):number {
+    getElapsed(now:number = timestamp(), past:number = this._startTime):number {
         if (undefined === this._startTime) {
-            throw new Error('Timer never started');
+            throw new Error('Timer never started.');
         }
 
-        return now - this._startTime;
+        return now - past;
     }
 
     /**
+     * Get the duration between the start and stop time.
+     *
      * @returns {number}
      * @throws {Error}
      */
     getDuration():number {
         if (undefined === this._stopTime || undefined === this._startTime) {
-            throw new Error('Timer never stopped and/or started');
+            throw new Error('Timer never stopped and/or started.');
         }
 
-        return this._stopTime - this._startTime;
+        return this.getElapsed(this._stopTime, this._startTime);
     }
 }
