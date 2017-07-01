@@ -35,15 +35,6 @@ interface TransformOptions {
     yTranslate:number;
 }
 
-const DEFAULT_MATRIX_OPTIONS:TransformOptions = <TransformOptions>{
-    xScale: 1,
-    yScale: 1,
-    xSkew: 0,
-    ySkew: 0,
-    xTranslate: 0,
-    yTranslate: 0
-};
-
 /**
  * @class Matrix
  */

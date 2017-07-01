@@ -77,6 +77,34 @@ describe('Matrix.transformPoint', () => {
         expect(transformedPoint.y).toBe(13);
     });
 
+    it('Handle rotate', () => {
+        let matrix = new Matrix(),
+            point = new Point(1, 1),
+            transformedPoint:Point;
+
+        matrix.rotate(Math.PI);
+        transformedPoint = matrix.transformPoint(point);
+
+        expect(transformedPoint.x.toFixed(2)).toBe('-1.00');
+        expect(transformedPoint.y.toFixed(2)).toBe('-1.00');
+    });
+
+    it('Handle rotate and scale', () => {
+        let matrix = new Matrix(),
+            point = new Point(1, 1),
+            transformedPoint:Point;
+
+        matrix.rotate(Math.PI); // -1, -1
+        matrix.scale(10, 1);    // -10, -1
+        matrix.rotate(Math.PI); // 10, 1
+        matrix.translate(3, 9); // 40, 10
+        matrix.rotate(Math.PI); // 20, 8
+        transformedPoint = matrix.transformPoint(point);
+
+        expect(transformedPoint.x.toFixed(2)).toBe('20.00');
+        expect(transformedPoint.y.toFixed(2)).toBe('8.00');
+    });
+
     it('graph', () => {
         let matrix = new Matrix(),
             p1 = new Point(0, 0),
