@@ -1,35 +1,37 @@
 {
-  "name": "physics",
-  "version": "1.0.1",
-  "description": "",
-  "main": "index.js",
+  "name": "@apestaartje/physics",
+  "version": "1.0.0",
+  "description": "A library with physics utility functions",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "npm run clean && node ./node_modules/.bin/tsc",
+    "clean": "rm -rf dist",
+    "lint": "tslint --config ./tslint.json --project tsconfig.json",
+    "prepublishOnly": "npm run build"
   },
+  "main": "dist/index",
+  "typings": "dist/index",
   "repository": {
     "type": "git",
-    "url": "https://github.com/joppe/physics.git"
+    "url": "https://github.com/joppe/array"
   },
-  "author": "Joppe Aarts",
+  "author": {
+    "name": "Joppe Aarts",
+    "email": "joppe@apestaartje.info"
+  },
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/joppe/physics/issues"
-  },
+  "keywords": [
+    "JavaScript",
+    "TypeScript"
+  ],
   "devDependencies": {
-    "@types/jasmine": "^2.5.37",
-    "bower": "^1.7.9",
-    "es-module-loader": "^1.3.0",
-    "jasmine-core": "^2.3.4",
-    "karma": "^0.13.3",
-    "karma-chrome-launcher": "^0.2",
-    "karma-jasmine": "^0.3.5",
-    "karma-systemjs": "^0.7.2",
-    "systemjs": "^0.19.40",
-    "tslint": "^3.14.0",
-    "typescript": "^2.0.6",
-    "typings": "^1.0.4"
+    "tslint": "^5.11.0",
+    "tslint-microsoft-contrib": "^5.2.1",
+    "typescript": "^3.2.1"
   },
+  "files": [
+    "dist"
+  ],
   "dependencies": {
-    "babel-polyfill": "^6.23.0"
+    "@apestaartje/geometry": "^1.2.2"
   }
 }
