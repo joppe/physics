@@ -1,6 +1,6 @@
+.history/
 .idea/
+.vscode/
+coverage/
+dist/
 node_modules/
-dist/*
-!dist/.gitkeep
-!dist/system.conf.js
-!dist/system.no-cache.js
